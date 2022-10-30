@@ -3,7 +3,11 @@ const jwt = require('jsonwebtoken');
 const AppError = require('../utils/appError');
 const User = require('./../models/userModel');
 
-function signToken() {}
+function signToken(id) {
+  return jwt.sign({ id }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRES_IN,
+  });
+}
 
 async function singup(req, res, next) {
   try {
@@ -15,14 +19,7 @@ async function singup(req, res, next) {
       passwordConfirm: req.body.passwordConfirm,
     });
 
-    const token = jwt.sign(
-      { id: newUser._id },
-      process.env.JWT_SECRET,
-      {
-        expiresIn: process.env.JWT_EXPIRES_IN,
-      },
-    );
-
+    const token = signToken(newUser._id);
     res.status(201).json({
       status: 'success',
       token,
@@ -54,7 +51,7 @@ async function login(req, res, next) {
     ) {
       return next(new AppError('Incorrect email or password', 401));
     }
-    const token = '';
+    const token = signToken(user._id);
     res.status(200).json({
       status: 'success',
       token,
