@@ -61,7 +61,38 @@ async function login(req, res, next) {
   }
 }
 
+async function protect(req, res, next) {
+  try {
+    // Getting token and check if is it there
+    let token;
+    if (
+      req.headers.authorization &&
+      req.headers.authorization.startsWith('Bearer')
+    ) {
+      token = req.headers.authorization.split(' ')[1];
+    }
+    console.log(token);
+    if (!token)
+      return next(
+        new AppError(
+          'You are not logged in! Please log in to ger access',
+          401,
+        ),
+      );
+    // Verifiction token
+
+    // check if user still exists
+
+    // Check user chnged password after the token eas issued
+
+    next();
+  } catch (err) {
+    next(err);
+  }
+}
+
 module.exports = {
   singup,
   login,
+  protect,
 };
