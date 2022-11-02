@@ -1,4 +1,5 @@
 require('dotenv').config({ path: './config.env', override: true });
+const { promisify } = require('util');
 const jwt = require('jsonwebtoken');
 const AppError = require('../utils/appError');
 const User = require('./../models/userModel');
@@ -80,11 +81,28 @@ async function protect(req, res, next) {
         ),
       );
     // Verifiction token
-
+    const decoded = await promisify(jwt.verify)(
+      token,
+      process.env.JWT_SECRET,
+    );
+    console.log(decoded);
     // check if user still exists
-
+    const freshUser = await User.findById(decoded.id);
+    if (!freshUser) {
+      return next(new AppError('This user no longer exists.', 401));
+    }
     // Check user chnged password after the token eas issued
+    if (freshUser.changesPasswordAfter(decoded.iat)) {
+      return next(
+        new AppError(
+          'User recently changed the password! Please log in again',
+          401,
+        ),
+      );
+    }
 
+    // Grant Access To Protected Routes
+    req.user = freshUser;
     next();
   } catch (err) {
     next(err);

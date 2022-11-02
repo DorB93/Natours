@@ -47,10 +47,19 @@ function handleValidationErrorDB(err) {
   return new AppError(message, 400);
 }
 
+function handleJWTError(error) {
+  return new AppError('Invalid token. Please log in again', 401);
+}
+
+function handleExpiredJWTError(error) {
+  return new AppError('Expired token. Please log in again', 401);
+}
+
 function errorMiddleware(err, req, res, next) {
   err.statusCode = err.statusCode || 500;
   err.status = err.status || 'error';
 
+  console.log(err.name);
   if (process.env.NODE_ENV === 'development') {
     sendErrorDev(err, res);
   } else if (process.env.NODE_ENV === 'production') {
@@ -61,7 +70,10 @@ function errorMiddleware(err, req, res, next) {
     if (error._message === 'Validation failed') {
       error = handleValidationErrorDB(error);
     }
-
+    if (error.name === 'JsonWebTokenError')
+      error = handleJWTError(error);
+    if (error.name === 'TokenExpiredError')
+      error = handleExpiredJWTError(error);
     sendErrorProd(error, res);
   }
 }
