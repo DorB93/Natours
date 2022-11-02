@@ -6,6 +6,8 @@ router.param('id', userController.checkUserID);
 
 router.post('/signup', authController.singup);
 router.post('/login', authController.login);
+router.post('/forgotPassword', authController.forgotPassword);
+router.post('/resetPassword', authController.resetPassword);
 
 router
   .route('/')

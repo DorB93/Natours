@@ -15,6 +15,7 @@ async function singup(req, res, next) {
     const newUser = await User.create({
       name: req.body.name,
       email: req.body.email,
+      role: req.body.role,
       photo: req.body.photo,
       password: req.body.password,
       passwordConfirm: req.body.passwordConfirm,
@@ -109,8 +110,47 @@ async function protect(req, res, next) {
   }
 }
 
+const restrictTo = (...roles) => {
+  return (req, res, next) => {
+    try {
+      if (!roles.includes(req.user.role))
+        throw new AppError(
+          "You don't have permission to perform this action",
+          403,
+        );
+      next();
+    } catch (err) {
+      next(err);
+    }
+  };
+};
+
+async function forgotPassword(req, res, next) {
+  try {
+    // Get user based on POSTed email
+    const user = await User.findOne({ email: req.body.email });
+    if (!user) {
+      return next(
+        new AppError('There is no user with that address', 404),
+      );
+    }
+    const resetToken = user.createPasswordResetToken();
+    await user.save({ validateBeforeSave: false });
+  } catch (err) {
+    next(err);
+  }
+}
+async function resetPassword(req, res, next) {
+  try {
+  } catch (err) {
+    next(err);
+  }
+}
 module.exports = {
   singup,
   login,
   protect,
+  restrictTo,
+  forgotPassword,
+  resetPassword,
 };
