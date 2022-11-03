@@ -148,6 +148,14 @@ async function forgotPassword(req, res, next) {
       email: user.email,
       subject: 'Your password reset token (valid for 10 min)',
       message,
+    }).catch(async () => {
+      user.passwordResetToken = undefined;
+      user.passwordResetExpires = undefined;
+      await user.save({ validateBeforeSave: false });
+      throw new AppError(
+        'There was an error sending the email. Try again later!',
+        500,
+      );
     });
 
     res.status(200).json({
