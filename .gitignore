@@ -20,3 +20,4 @@ dev-data/templates/tourCardTemplate.pug
 dev-data/templates/tourTemplate.pug
 .eslintrc.json
 .gitignore
+config.env
