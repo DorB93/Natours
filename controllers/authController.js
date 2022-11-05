@@ -1,4 +1,5 @@
 require('dotenv').config({ path: './config.env', override: true });
+const crypto = require('crypto');
 const { promisify } = require('util');
 const jwt = require('jsonwebtoken');
 const AppError = require('../utils/appError');
@@ -152,9 +153,11 @@ async function forgotPassword(req, res, next) {
       user.passwordResetToken = undefined;
       user.passwordResetExpires = undefined;
       await user.save({ validateBeforeSave: false });
-      throw new AppError(
-        'There was an error sending the email. Try again later!',
-        500,
+      next(
+        new AppError(
+          'There was an error sending the email. Try again later!',
+          500,
+        ),
       );
     });
 
@@ -169,6 +172,33 @@ async function forgotPassword(req, res, next) {
 
 async function resetPassword(req, res, next) {
   try {
+    // 1) Get user based on the token
+    const hashedToken = crypto
+      .createHash('sha256')
+      .update(req.params.token)
+      .digest('hex');
+
+    const user = await User.findOne({
+      passwordResetToken: hashedToken,
+      passwordResetExpires: { $gt: Date.now() },
+    });
+    // 2) If token not expired, and there is a user. set the new password
+    if (!user) {
+      next(new AppError('Token is unvalid or expired!', 400));
+    }
+    user.password = req.body.password;
+    user.passwordConfirm = req.body.passwordConfirm;
+    user.passwordResetToken = undefined;
+    user.passwordResetExpires = undefined;
+    // update the changedPasswordAt for the user
+    user.passwordChangedAt = Date.now();
+    await user.save();
+    // Log in the user, send a JWT token
+    const token = signToken(user._id);
+    res.status(201).json({
+      status: 'success',
+      token,
+    });
   } catch (err) {
     next(err);
   }
