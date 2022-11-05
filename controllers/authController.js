@@ -12,6 +12,16 @@ function signToken(id) {
   });
 }
 
+function createSendToken(user, statusCode, res) {
+  const token = signToken(user._id);
+  res.status(statusCode).json({
+    status: 'success',
+    token,
+    data: {
+      user,
+    },
+  });
+}
 async function singup(req, res, next) {
   try {
     const newUser = await User.create({
@@ -22,15 +32,7 @@ async function singup(req, res, next) {
       password: req.body.password,
       passwordConfirm: req.body.passwordConfirm,
     });
-
-    const token = signToken(newUser._id);
-    res.status(201).json({
-      status: 'success',
-      token,
-      data: {
-        newUser,
-      },
-    });
+    createSendToken(newUser, 201, res);
   } catch (err) {
     next(err);
   }
@@ -55,11 +57,7 @@ async function login(req, res, next) {
     ) {
       return next(new AppError('Incorrect email or password', 401));
     }
-    const token = signToken(user._id);
-    res.status(200).json({
-      status: 'success',
-      token,
-    });
+    createSendToken(user, 200, res);
   } catch (err) {
     next(err);
   }
@@ -194,15 +192,41 @@ async function resetPassword(req, res, next) {
     user.passwordChangedAt = Date.now();
     await user.save();
     // Log in the user, send a JWT token
-    const token = signToken(user._id);
-    res.status(201).json({
-      status: 'success',
-      token,
-    });
+    createSendToken(user, 201, res);
   } catch (err) {
     next(err);
   }
 }
+
+async function updatePassword(req, res, next) {
+  try {
+    // 1) Get user from collaction
+    const user = await User.findById(req.user._id).select(
+      '+password',
+    );
+
+    // 2) Check posted password is correct
+    const { password } = req.body;
+    if (!(await user.correctPassword(password, user.password))) {
+      return next(
+        new AppError('Wrong Password! Please try agian', 401),
+      );
+    }
+    // 3) If true, update the password
+    const { newPassword, newPasswordConfirm } = req.body;
+    user.password = newPassword;
+    user.passwordConfirm = newPasswordConfirm;
+    user.passwordResetToken = undefined;
+    user.passwordResetExpires = undefined;
+    await user.save();
+
+    // 4) log user in, send new JWT
+    createSendToken(user, 200, res);
+  } catch (err) {
+    next(err);
+  }
+}
+
 module.exports = {
   singup,
   login,
@@ -210,4 +234,5 @@ module.exports = {
   restrictTo,
   forgotPassword,
   resetPassword,
+  updatePassword,
 };

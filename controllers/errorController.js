@@ -67,7 +67,7 @@ function errorMiddleware(err, req, res, next) {
 
     if (error.name === 'CastError') error = handleCastErrorDB(error);
     if (error.code === 11000) error = handleduplicateFieldsDB(error);
-    if (error._message === 'Validation failed') {
+    if (error.name === 'ValidationError') {
       error = handleValidationErrorDB(error);
     }
     if (error.name === 'JsonWebTokenError')
