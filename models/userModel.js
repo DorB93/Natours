@@ -3,54 +3,60 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
 
-const userSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: [true, 'Please tell us your name!'],
-  },
-  email: {
-    type: String,
-    required: [true, 'Please provide your email!'],
-    unique: true,
-    lowercase: true,
-    validate: [validator.isEmail, 'Please provide a valid email!'],
-  },
-  role: {
-    type: String,
-    enum: ['user', 'guide', 'lead-guide', 'admin'],
-    default: 'user',
-  },
-  photo: String,
-  password: {
-    type: String,
-    required: [true, 'Please provide a password'],
-    minlength: [
-      8,
-      'A password name must have more or equal then 8 characters',
-    ],
-    select: false,
-  },
-  passwordConfirm: {
-    type: String,
-    required: [true, 'Please confirme your password'],
-    validate: {
-      // Only work on SAVE & CREATE!!
-      validator: function (val) {
-        return val === this.password;
+const userSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: [true, 'Please tell us your name!'],
+    },
+    email: {
+      type: String,
+      required: [true, 'Please provide your email!'],
+      unique: true,
+      lowercase: true,
+      validate: [validator.isEmail, 'Please provide a valid email!'],
+    },
+    role: {
+      type: String,
+      enum: ['user', 'guide', 'lead-guide', 'admin'],
+      default: 'user',
+    },
+    photo: String,
+    password: {
+      type: String,
+      required: [true, 'Please provide a password'],
+      minlength: [
+        8,
+        'A password name must have more or equal then 8 characters',
+      ],
+      select: false,
+    },
+    passwordConfirm: {
+      type: String,
+      required: [true, 'Please confirme your password'],
+      validate: {
+        // Only work on SAVE & CREATE!!
+        validator: function (val) {
+          return val === this.password;
+        },
+        message:
+          'password Confirm ({VALUE}) should be identical to password',
       },
-      message:
-        'password Confirm ({VALUE}) should be identical to password',
+    },
+    passwordChangedAt: { type: Date, default: Date.now() },
+    passwordResetToken: String,
+    passwordResetExpires: Date,
+    active: {
+      type: Boolean,
+      default: true,
+      select: false,
     },
   },
-  passwordChangedAt: { type: Date, default: Date.now() },
-  passwordResetToken: String,
-  passwordResetExpires: Date,
-  active: {
-    type: Boolean,
-    default: true,
-    select: false,
+  {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
   },
-});
+);
 
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();

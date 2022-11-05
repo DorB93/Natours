@@ -184,7 +184,3 @@ tourSchema.pre('aggregate', function (next) {
 const Tour = mongoose.model('Tour', tourSchema);
 
 module.exports = Tour;
-
-/*,
-  images: [String],
-  startDates: [Date], */
