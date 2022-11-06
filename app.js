@@ -11,6 +11,7 @@ const AppError = require('./utils/appError');
 
 const tourRouter = require(`${__dirname}/routes/tourRoutes`);
 const userRouter = require(`${__dirname}/routes/userRoutes`);
+const reviewRouter = require(`${__dirname}/routes/reviewRoutes`);
 
 const app = express();
 
@@ -68,6 +69,7 @@ app.use((req, res, next) => {
 // ROUTES
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
+app.use('/api/v1/reviews', reviewRouter);
 
 // Handling Unhandled Routes - must be the last
 app.all('*', (req, res, next) => {
