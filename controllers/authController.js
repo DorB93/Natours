@@ -32,7 +32,6 @@ function createSendToken(user, statusCode, res) {
 
   res.status(statusCode).json({
     status: 'success',
-    token,
     data: {
       user,
     },
@@ -83,11 +82,8 @@ async function protect(req, res, next) {
   try {
     // Getting token and check if is it there
     let token;
-    if (
-      req.headers.authorization &&
-      req.headers.authorization.startsWith('Bearer')
-    ) {
-      token = req.headers.authorization.split(' ')[1];
+    if (req.cookies.jwt) {
+      token = req.cookies.jwt;
     }
     console.log(token);
     if (!token)
