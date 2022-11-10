@@ -22,7 +22,9 @@ async function getReview(req, res, next) {
 
 async function getAllReviews(req, res, next) {
   try {
-    const features = new APIFeatuers(Review.find(), req.query)
+    let filter = {};
+    if (req.params.tourId) filter = { tour: req.params.tourId };
+    const features = new APIFeatuers(Review.find(filter), req.query)
       .sort()
       .limitFields()
       .paginate();
@@ -41,6 +43,9 @@ async function getAllReviews(req, res, next) {
 
 async function createReview(req, res, next) {
   try {
+    // allow Nested routes
+    if (!req.body.tour) req.body.tour = req.params.tourId;
+    if (!req.body.user) req.body.user = req.user._id;
     const newReview = await Review.create(req.body);
 
     res.status(201).json({
