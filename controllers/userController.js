@@ -11,7 +11,10 @@ function filterObj(obj, ...allowedFields) {
   });
   return filteredObj;
 }
-
+async function getMe(req, res, next) {
+  req.params.id = req.user.id;
+  next();
+}
 async function updateMe(req, res, next) {
   try {
     // 1) Create error if user POSTs Password data
@@ -71,6 +74,7 @@ const updateUser = factory.updateOne(User);
 const deleteUser = factory.deleteOne(User);
 
 module.exports = {
+  getMe,
   getAllUsers,
   createUser,
   getUser,
