@@ -1,7 +1,7 @@
 const APIFeatuers = require('../utils/APIFeatures');
 const AppError = require('../utils/appError');
 const Tour = require(`${__dirname}/../models/tourModel`);
-
+const factory = require('./handlerFactory');
 // const tours = JSON.parse(fs.readFileSync(toursFileRoot));
 
 async function getTour(req, res, next) {
@@ -89,22 +89,23 @@ async function updateTour(req, res, next) {
   }
 }
 
-async function deleteTour(req, res, next) {
-  try {
-    const tour = await Tour.findByIdAndDelete(req.params.id);
+const deleteTour = factory.deleteOne(Tour);
+// async function deleteTour(req, res, next) {
+//   try {
+//     const tour = await Tour.findByIdAndDelete(req.params.id);
 
-    if (!tour) {
-      return next(new AppError('No tour found with that ID', 404));
-    }
+//     if (!tour) {
+//       return next(new AppError('No tour found with that ID', 404));
+//     }
 
-    res.status(204).json({
-      status: 'success',
-      data: null,
-    });
-  } catch (err) {
-    next(err);
-  }
-}
+//     res.status(204).json({
+//       status: 'success',
+//       data: null,
+//     });
+//   } catch (err) {
+//     next(err);
+//   }
+// }
 
 async function getTourStats(req, res, next) {
   try {

@@ -1,5 +1,6 @@
 const AppError = require('../utils/appError');
 const User = require('./../models/userModel');
+const factory = require('./handlerFactory');
 
 function checkUserID(req, res, next, val) {
   /////////
@@ -117,18 +118,8 @@ function updateUser(req, res) {
     });
   });
 }
-function deleteUser(req, res) {
-  const user = users.find((u) => u.id === +req.params.id);
 
-  const updatedUsers = users.filter((u) => u.id !== +req.params.id);
-
-  fs.writeFile(userFileRoot, JSON.stringify(updatedUsers), (err) => {
-    res.status(204).json({
-      status: 'success',
-      data: null,
-    });
-  });
-}
+const deleteUser = factory.deleteOne(User);
 
 module.exports = {
   getAllUsers,
