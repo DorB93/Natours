@@ -64,30 +64,30 @@ async function createNewTour(req, res, next) {
     next(err);
   }
 }
-
-async function updateTour(req, res, next) {
-  try {
-    const tour = await Tour.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      {
-        new: true,
-        runValidators: true,
-      },
-    );
-    if (!tour) {
-      return next(new AppError('No tour found with that ID', 404));
-    }
-    res.status(200).json({
-      status: 'success',
-      data: {
-        tour,
-      },
-    });
-  } catch (err) {
-    next(err);
-  }
-}
+const updateTour = factory.updateOne(Tour);
+// async function updateTour(req, res, next) {
+//   try {
+//     const tour = await Tour.findByIdAndUpdate(
+//       req.params.id,
+//       req.body,
+//       {
+//         new: true,
+//         runValidators: true,
+//       },
+//     );
+//     if (!tour) {
+//       return next(new AppError('No tour found with that ID', 404));
+//     }
+//     res.status(200).json({
+//       status: 'success',
+//       data: {
+//         tour,
+//       },
+//     });
+//   } catch (err) {
+//     next(err);
+//   }
+// }
 
 const deleteTour = factory.deleteOne(Tour);
 // async function deleteTour(req, res, next) {

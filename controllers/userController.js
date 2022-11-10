@@ -96,29 +96,7 @@ function createUser(req, res) {
     },
   });
 }
-function updateUser(req, res) {
-  const user = users.find((t) => t.id === +req.params.id);
-
-  // console.log(req.body);
-  const newUser = { ...user, ...req.body };
-
-  // console.log(updateduser);
-  const restUsers = users.filter((t) => t.id !== +req.params.id);
-  const updatedUsers = [...restUsers, newUser].sort(
-    (a, b) => a.id - b.id,
-  );
-  // console.log(updatedusers);
-
-  fs.writeFile(userFileRoot, JSON.stringify(updatedUsers), (err) => {
-    res.status(200).json({
-      status: 'success',
-      data: {
-        user: newUser,
-      },
-    });
-  });
-}
-
+const updateUser = factory.updateOne(User);
 const deleteUser = factory.deleteOne(User);
 
 module.exports = {

@@ -60,48 +60,8 @@ async function createReview(req, res, next) {
   }
 }
 
-async function updateReview(req, res, next) {
-  try {
-    const review = await Review.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      {
-        new: true,
-        runValidators: true,
-      },
-    );
-    if (!review) {
-      return next(new AppError('No review found with that ID', 404));
-    }
-    res.status(200).json({
-      status: 'success',
-      data: {
-        review,
-      },
-    });
-  } catch (err) {
-    next(err);
-  }
-}
-
+const updateReview = factory.updateOne(Review);
 const deleteReview = factory.deleteOne(Review);
-
-// async function deleteReview(req, res, next) {
-//   try {
-//     const review = await Review.findByIdAndDelete(req.params.id);
-
-//     if (!review) {
-//       return next(new AppError('No review found with that ID', 404));
-//     }
-
-//     res.status(204).json({
-//       status: 'success',
-//       data: null,
-//     });
-//   } catch (err) {
-//     next(err);
-//   }
-// }
 
 module.exports = {
   getReview,

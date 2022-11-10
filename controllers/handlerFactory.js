@@ -1,7 +1,7 @@
 const AppError = require('../utils/appError');
 
-function deleteOne(Model) {
-  return async function (req, res, next) {
+exports.deleteOne = (Model) =>
+  async function (req, res, next) {
     try {
       const doc = await Model.findByIdAndDelete(req.params.id);
 
@@ -18,8 +18,30 @@ function deleteOne(Model) {
       next(err);
     }
   };
-}
 
-module.exports = {
-  deleteOne,
-};
+exports.updateOne = (Model) =>
+  async function (req, res, next) {
+    try {
+      const doc = await Model.findByIdAndUpdate(
+        req.params.id,
+        req.body,
+        {
+          new: true,
+          runValidators: true,
+        },
+      );
+      if (!doc) {
+        return next(
+          new AppError('No document found with that ID', 404),
+        );
+      }
+      res.status(200).json({
+        status: 'success',
+        data: {
+          data: doc,
+        },
+      });
+    } catch (err) {
+      next(err);
+    }
+  };
