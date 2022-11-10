@@ -2,11 +2,6 @@ const AppError = require('../utils/appError');
 const User = require('./../models/userModel');
 const factory = require('./handlerFactory');
 
-function checkUserID(req, res, next, val) {
-  /////////
-  next();
-}
-
 function filterObj(obj, ...allowedFields) {
   let filteredObj = {};
   Object.keys(obj).forEach((el) => {
@@ -15,20 +10,6 @@ function filterObj(obj, ...allowedFields) {
     }
   });
   return filteredObj;
-}
-async function getAllUsers(req, res, next) {
-  try {
-    const users = await User.find();
-    res.status(200).json({
-      status: 'success',
-      results: users.length,
-      data: {
-        users,
-      },
-    });
-  } catch (err) {
-    next(err);
-  }
 }
 
 async function updateMe(req, res, next) {
@@ -76,26 +57,16 @@ async function deleteMe(req, res, next) {
     next(err);
   }
 }
-function getUser(req, res) {
-  const user = users.find((u) => u.id === +req.params.id);
-  res.status(200).json({
-    status: 'success',
-    requestAt: req.requestTime,
-    results: users.length,
-    data: {
-      user,
-    },
-  });
-}
+
 function createUser(req, res) {
-  res.status(201).json({
-    status: 'success',
-    requestAt: req.requestTime,
-    data: {
-      users,
-    },
+  res.status(500).json({
+    status: 'error',
+    Message: 'This route is not defined! Please use /signup instead',
   });
 }
+
+const getAllUsers = factory.getAll(User);
+const getUser = factory.getOne(User);
 const updateUser = factory.updateOne(User);
 const deleteUser = factory.deleteOne(User);
 
@@ -105,7 +76,6 @@ module.exports = {
   getUser,
   updateUser,
   deleteUser,
-  checkUserID,
   updateMe,
   deleteMe,
 };

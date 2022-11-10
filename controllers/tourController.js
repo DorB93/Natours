@@ -1,28 +1,12 @@
-const APIFeatuers = require('../utils/APIFeatures');
-const AppError = require('../utils/appError');
 const Tour = require(`${__dirname}/../models/tourModel`);
 const factory = require('./handlerFactory');
 // const tours = JSON.parse(fs.readFileSync(toursFileRoot));
 
-async function getTour(req, res, next) {
-  try {
-    const tour = await Tour.findById(req.params.id).populate(
-      'reviews',
-    );
-
-    if (!tour) {
-      return next(new AppError('No tour found with that ID', 404));
-    }
-    res.status(200).json({
-      status: 'success',
-      data: {
-        tour,
-      },
-    });
-  } catch (err) {
-    next(err);
-  }
-}
+const getAllTours = factory.getAll(Tour);
+const getTour = factory.getOne(Tour, { path: 'reviews' });
+const createTour = factory.createOne(Tour);
+const updateTour = factory.updateOne(Tour);
+const deleteTour = factory.deleteOne(Tour);
 
 function aliasTopTours(req, res, next) {
   req.query.limit = '5';
@@ -30,82 +14,6 @@ function aliasTopTours(req, res, next) {
   req.query.fields = 'name,price,ratingsAverage,summary,difficulty';
   next();
 }
-
-async function getAllTours(req, res, next) {
-  try {
-    const features = new APIFeatuers(Tour.find(), req.query)
-      .filter()
-      .sort()
-      .limitFields()
-      .paginate();
-    const tours = await features.query;
-    res.status(200).json({
-      status: 'success',
-      results: tours.length,
-      data: {
-        tours,
-      },
-    });
-  } catch (err) {
-    next(err);
-  }
-}
-
-async function createNewTour(req, res, next) {
-  try {
-    const newTour = await Tour.create(req.body);
-    res.status(201).json({
-      status: 'success',
-      data: {
-        tour: newTour,
-      },
-    });
-  } catch (err) {
-    next(err);
-  }
-}
-const updateTour = factory.updateOne(Tour);
-// async function updateTour(req, res, next) {
-//   try {
-//     const tour = await Tour.findByIdAndUpdate(
-//       req.params.id,
-//       req.body,
-//       {
-//         new: true,
-//         runValidators: true,
-//       },
-//     );
-//     if (!tour) {
-//       return next(new AppError('No tour found with that ID', 404));
-//     }
-//     res.status(200).json({
-//       status: 'success',
-//       data: {
-//         tour,
-//       },
-//     });
-//   } catch (err) {
-//     next(err);
-//   }
-// }
-
-const deleteTour = factory.deleteOne(Tour);
-// async function deleteTour(req, res, next) {
-//   try {
-//     const tour = await Tour.findByIdAndDelete(req.params.id);
-
-//     if (!tour) {
-//       return next(new AppError('No tour found with that ID', 404));
-//     }
-
-//     res.status(204).json({
-//       status: 'success',
-//       data: null,
-//     });
-//   } catch (err) {
-//     next(err);
-//   }
-// }
 
 async function getTourStats(req, res, next) {
   try {
@@ -190,7 +98,7 @@ async function getMonthlyPlan(req, res, next) {
 
 module.exports = {
   getAllTours,
-  createNewTour,
+  createTour,
   getTour,
   updateTour,
   deleteTour,
