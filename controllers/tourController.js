@@ -100,7 +100,6 @@ async function getMonthlyPlan(req, res, next) {
 async function getToursWithin(req, res, next) {
   try {
     ///tour-within/:distance/center/:latlng*/unit/:unit
-    ///tour-within/233/center/36.166189,-114.923407/unit/mi
     const { distance, latlng, unit } = req.params;
     const [lat, lng] = latlng.split(',');
     const radius =
@@ -132,6 +131,45 @@ async function getToursWithin(req, res, next) {
     next(err);
   }
 }
+async function getDistances(req, res, next) {
+  try {
+    const { latlng, unit } = req.params;
+    const [lat, lng] = latlng.split(',');
+    const multiplier = unit === 'mi' ? 0.00062137 : 0.001;
+    if (!lat || !lng) {
+      return next(
+        new AppError(
+          'Please provide latitude ang longittude in format lat,lng.',
+          400,
+        ),
+      );
+    }
+    const distances = await Tour.aggregate([
+      {
+        $geoNear: {
+          near: { type: 'Point', coordinates: [lng * 1, lat * 1] },
+          distanceField: 'distance',
+          distanceMultiplier: multiplier,
+        },
+      },
+      {
+        $project: {
+          distance: 1,
+          name: 1,
+        },
+      },
+    ]);
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        data: distances,
+      },
+    });
+  } catch (err) {
+    next(err);
+  }
+}
 module.exports = {
   getAllTours,
   createTour,
@@ -142,4 +180,5 @@ module.exports = {
   getTourStats,
   getMonthlyPlan,
   getToursWithin,
+  getDistances,
 };
