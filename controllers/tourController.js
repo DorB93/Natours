@@ -1,4 +1,5 @@
 const Tour = require(`${__dirname}/../models/tourModel`);
+const AppError = require('../utils/appError');
 const factory = require('./handlerFactory');
 // const tours = JSON.parse(fs.readFileSync(toursFileRoot));
 
@@ -96,6 +97,41 @@ async function getMonthlyPlan(req, res, next) {
   }
 }
 
+async function getToursWithin(req, res, next) {
+  try {
+    ///tour-within/:distance/center/:latlng*/unit/:unit
+    ///tour-within/233/center/36.166189,-114.923407/unit/mi
+    const { distance, latlng, unit } = req.params;
+    const [lat, lng] = latlng.split(',');
+    const radius =
+      unit === 'mi' ? distance / 3963.2 : distance / 6378.1;
+    if (!lat || !lng) {
+      return next(
+        new AppError(
+          'Please provide latitude ang longittude in format lat,lng.',
+          400,
+        ),
+      );
+    }
+    console.log({ distance }, { lat }, { lng }, { unit });
+
+    const tours = await Tour.find({
+      startLocation: {
+        $geoWithin: { $centerSphere: [[lng, lat], radius] },
+      },
+    });
+
+    res.status(200).json({
+      status: 'success',
+      results: tours.length,
+      data: {
+        data: tours,
+      },
+    });
+  } catch (err) {
+    next(err);
+  }
+}
 module.exports = {
   getAllTours,
   createTour,
@@ -105,4 +141,5 @@ module.exports = {
   aliasTopTours,
   getTourStats,
   getMonthlyPlan,
+  getToursWithin,
 };
