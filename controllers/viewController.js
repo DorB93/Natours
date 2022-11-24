@@ -2,6 +2,7 @@ const User = require('../models/userModel');
 const AppError = require('../utils/appError');
 const Tour = require('./../models/tourModel');
 
+
 const getOverview = async (req, res, next) => {
   try {
     // Get Tours Data from collection
