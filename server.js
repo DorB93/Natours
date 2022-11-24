@@ -12,8 +12,8 @@ console.log(process.env.NODE_ENV);
 const app = require('./app');
 
 // Connect to MongoDB database
-mongoose.connect('mongodb://localhost:27017/Natours').then(() => {
-  console.log('MongoDB connected successfuly!');
+mongoose.connect('mongodb://127.0.0.1:27017/Natours').then(() => {
+  console.log('MongoDB connected successfully!');
 });
 // .catch((err) => {
 //   console.log(err);

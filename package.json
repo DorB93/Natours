@@ -10,15 +10,18 @@
     "start": "nodemon server.js",
     "start:prod": "NODE_ENV=production nodemon server.js",
     "debug": "ndb server.js",
-    "watch:js": "parcel serve ./public/js/index.js --dist-dir ./public/js/bundled",
-    "build": "parcel build ./public/js/index.js --dist-dir ./public/js/bundled"
+    "build": "parcel build ./public/js/index.js --dist-dir ./public/js/bundled",
+    "watch:js": "parcel watch ./public/js/index.js --dist-dir ./public/js/bundled",
+    "watch": "parcel watch"
   },
   "keywords": [],
   "author": "Dor Bezalel",
   "license": "ISC",
   "dependencies": {
+    "@babel/polyfill": "^7.12.1",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
+    "core-js": "^3.26.1",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "express-mongo-sanitize": "^2.2.0",
