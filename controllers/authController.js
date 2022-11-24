@@ -37,7 +37,7 @@ function createSendToken(user, statusCode, res) {
     },
   });
 }
-async function singup(req, res, next) {
+async function signup(req, res, next) {
   try {
     const newUser = await User.create({
       name: req.body.name,
@@ -78,6 +78,34 @@ async function login(req, res, next) {
   }
 }
 
+async function idLoggedIn(req, res, next) {
+  try {
+    // Getting token and check if is it there
+    if (req.cookies.jwt) {
+      // Verification token
+      const decoded = await promisify(jwt.verify)(
+        req.cookies.jwt,
+        process.env.JWT_SECRET,
+      );
+      // check if user still exists
+      const currUser = await User.findById(decoded.id);
+      if (!currUser) {
+        return next();
+      }
+      // Check user changed password after the token eas issued
+      if (currUser.changesPasswordAfter(decoded.iat)) {
+        return next();
+      }
+
+      // there is a logged in user
+      res.locals.user = currUser;
+    }
+    next();
+  } catch (err) {
+    next();
+  }
+}
+
 async function protect(req, res, next) {
   try {
     // Getting token and check if is it there
@@ -93,7 +121,7 @@ async function protect(req, res, next) {
           401,
         ),
       );
-    // Verifiction token
+    // Verification token
     const decoded = await promisify(jwt.verify)(
       token,
       process.env.JWT_SECRET,
@@ -104,7 +132,7 @@ async function protect(req, res, next) {
     if (!freshUser) {
       return next(new AppError('This user no longer exists.', 401));
     }
-    // Check user chnged password after the token eas issued
+    // Check user changed password after the token eas issued
     if (freshUser.changesPasswordAfter(decoded.iat)) {
       return next(
         new AppError(
@@ -194,7 +222,7 @@ async function resetPassword(req, res, next) {
     });
     // 2) If token not expired, and there is a user. set the new password
     if (!user) {
-      next(new AppError('Token is unvalid or expired!', 400));
+      next(new AppError('Token is invalid or expired!', 400));
     }
     user.password = req.body.password;
     user.passwordConfirm = req.body.passwordConfirm;
@@ -212,7 +240,7 @@ async function resetPassword(req, res, next) {
 
 async function updatePassword(req, res, next) {
   try {
-    // 1) Get user from collaction
+    // 1) Get user from collation
     const user = await User.findById(req.user._id).select(
       '+password',
     );
@@ -221,7 +249,7 @@ async function updatePassword(req, res, next) {
     const { password } = req.body;
     if (!(await user.correctPassword(password, user.password))) {
       return next(
-        new AppError('Wrong Password! Please try agian', 401),
+        new AppError('Wrong Password! Please try again', 401),
       );
     }
     // 3) If true, update the password
@@ -240,8 +268,9 @@ async function updatePassword(req, res, next) {
 }
 
 module.exports = {
-  singup,
+  signup,
   login,
+  idLoggedIn,
   protect,
   restrictTo,
   forgotPassword,
