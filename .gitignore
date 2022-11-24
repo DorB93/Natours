@@ -3,3 +3,5 @@ dev-data
 .eslintrc.json
 .gitignore
 config.env
+
+.parcel-cache
