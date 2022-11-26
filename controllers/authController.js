@@ -106,6 +106,14 @@ async function idLoggedIn(req, res, next) {
   }
 }
 
+function logout(req, res) {
+  res.cookie('jwt', 'null', {
+    expires: new Date(Date.now() - 10 * 1000),
+    httpOnly: true,
+  });
+  res.status(200).json({ status: 'success' });
+}
+
 async function protect(req, res, next) {
   try {
     // Getting token and check if is it there
@@ -276,4 +284,5 @@ module.exports = {
   forgotPassword,
   resetPassword,
   updatePassword,
+  logout,
 };
