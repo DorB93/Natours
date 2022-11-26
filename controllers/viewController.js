@@ -2,7 +2,6 @@ const User = require('../models/userModel');
 const AppError = require('../utils/appError');
 const Tour = require('./../models/tourModel');
 
-
 const getOverview = async (req, res, next) => {
   try {
     // Get Tours Data from collection
@@ -24,11 +23,9 @@ const getTourDetails = async (req, res, next) => {
     const tour = await Tour.findOne({
       slug: req.params.slug,
     }).populate({ path: 'reviews', fields: 'review rating user' });
+
     if (!tour) {
-      throw new AppError(
-        `There is no tour with that slug: ${req.params.slug}`,
-        404,
-      );
+      throw new AppError(`There is no tour with that name.`, 404);
     }
     res.status(200).render('tour', {
       title: `${tour.name} Tour`,

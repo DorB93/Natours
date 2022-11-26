@@ -1,32 +1,59 @@
 const AppError = require('../utils/appError');
 
-function sendErrorDev(err, res) {
-  res.status(err.statusCode).json({
-    status: err.status,
-    message: err.message,
-    stack: err.stack,
-    error: err,
-  });
-}
-
-function sendErrorProd(err, res) {
-  // Operational, trusted error: send a message to client
-  if (err.isOperational) {
+function sendErrorDev(err, req, res) {
+  if (req.originalUrl.startsWith('/api')) {
     res.status(err.statusCode).json({
       status: err.status,
       message: err.message,
+      stack: err.stack,
+      error: err,
     });
+    return;
+  }
+  console.error('ERROR!!!', err);
+  res.status(err.statusCode).render('error', {
+    title: 'Something went wrong!',
+    msg: `${err.message}`,
+  });
+}
 
+function sendErrorProd(err, req, res) {
+  if (req.originalUrl.startsWith('/api')) {
+    if (err.isOperational) {
+      // Operational, trusted error: send a message to client
+      res.status(err.statusCode).json({
+        status: err.status,
+        message: err.message,
+      });
+      return;
+      // Programing or other unknown error: we don't want to leak error details
+    } else {
+      // Render generic message
+      res.status(500).json({
+        status: 'error',
+        message: 'Something went wrong!',
+      });
+      return;
+    }
+  }
+  if (err.isOperational) {
+    // Operational, trusted error: send a message to client
+    res.status(err.statusCode).render('error', {
+      title: 'Something went wrong!',
+      msg: err.message,
+    });
+    return;
     // Programing or other unknown error: we don't want to leak error details
   } else {
     // log error
     // console.error('ERROR ‼💢', err);
 
     // Send generic message
-    res.status(500).json({
-      status: 'error',
-      message: 'Something went wrong!',
+    res.status(err.statusCode).render('error', {
+      title: 'Something went wrong!',
+      msg: 'Please try again later.',
     });
+    return;
   }
 }
 
@@ -35,7 +62,7 @@ function handleCastErrorDB(err) {
   return new AppError(message, 400);
 }
 
-function handleduplicateFieldsDB(err) {
+function handleDuplicateFieldsDB(err) {
   const value = err.keyValue.name;
   const message = `Duplicate field value: ${value} Please use another value`;
   return new AppError(message, 400);
@@ -61,12 +88,12 @@ function errorMiddleware(err, req, res, next) {
 
   console.log(err.name);
   if (process.env.NODE_ENV === 'development') {
-    sendErrorDev(err, res);
+    sendErrorDev(err, req, res);
   } else if (process.env.NODE_ENV === 'production') {
     let error = { ...err };
-
+    error.message = err.message;
     if (error.name === 'CastError') error = handleCastErrorDB(error);
-    if (error.code === 11000) error = handleduplicateFieldsDB(error);
+    if (error.code === 11000) error = handleDuplicateFieldsDB(error);
     if (error.name === 'ValidationError') {
       error = handleValidationErrorDB(error);
     }
@@ -74,7 +101,7 @@ function errorMiddleware(err, req, res, next) {
       error = handleJWTError(error);
     if (error.name === 'TokenExpiredError')
       error = handleExpiredJWTError(error);
-    sendErrorProd(error, res);
+    sendErrorProd(error, req, res);
   }
 }
 
