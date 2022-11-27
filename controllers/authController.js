@@ -152,6 +152,7 @@ async function protect(req, res, next) {
 
     // Grant Access To Protected Routes
     req.user = freshUser;
+    res.locals.user = freshUser;
     next();
   } catch (err) {
     next(err);

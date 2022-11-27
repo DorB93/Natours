@@ -677,7 +677,7 @@ async function login(email, password) {
             (0, _alerts.showAlert)("success", "Logged in successfully");
             window.setTimeout(()=>{
                 location.assign("/");
-            }, 2000);
+            }, 1000);
         } else throw res;
     } catch (err) {
         console.log({
@@ -727,12 +727,12 @@ function hideAlert() {
     const el = document.querySelector("alert");
     if (el) el.parentElement.removeChild(el);
 }
-function showAlert(type, msg) {
+const showAlert = (type, msg)=>{
     hideAlert();
-    const markup = `<div class='alert alert--${type}>${msg}</div>`;
+    const markup = `<div class="alert alert--${type}">${msg}</div>`;
     document.querySelector("body").insertAdjacentHTML("afterbegin", markup);
     window.setTimeout(hideAlert, 5000);
-}
+};
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"5Birt"}],"58ZVV":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -7881,7 +7881,8 @@ async function logout() {
     try {
         const res = await fetch("http://127.0.0.1:3000/api/v1/users/logout");
         console.log(res);
-        if (res.status === 200) location.reload(true);
+        if (res.status === 200) location.assign("/").reload(true);
+        return;
     } catch (error) {
         (0, _alerts.showAlert)("error", "Error logging out! try again");
     }

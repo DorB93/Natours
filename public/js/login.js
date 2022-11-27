@@ -22,7 +22,7 @@ export async function login(email, password) {
       showAlert('success', 'Logged in successfully');
       window.setTimeout(() => {
         location.assign('/');
-      }, 2000);
+      }, 1000);
     } else {
       throw res;
     }
