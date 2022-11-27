@@ -47,32 +47,32 @@ const getAccount = (req, res) => {
     title: `Your account`,
   });
 };
-const updateUserData = async (req, res, next) => {
-  try {
-    console.log('update', req.body);
-    const updatedUser = await User.findByIdAndUpdate(
-      req.user._id,
-      {
-        name: req.body.name,
-        email: req.body.email,
-      },
-      {
-        new: true,
-        runValidators: true,
-      },
-    );
-    res.status(200).render('account', {
-      title: `Your account`,
-      user: updatedUser,
-    });
-  } catch (error) {
-    next();
-  }
-};
+// const updateUserData = async (req, res, next) => {
+//   try {
+//     console.log('update', req.body);
+//     const updatedUser = await User.findByIdAndUpdate(
+//       req.user._id,
+//       {
+//         name: req.body.name,
+//         email: req.body.email,
+//       },
+//       {
+//         new: true,
+//         runValidators: true,
+//       },
+//     );
+//     res.status(200).render('account', {
+//       title: `Your account`,
+//       user: updatedUser,
+//     });
+//   } catch (error) {
+//     next();
+//   }
+// };
 module.exports = {
   getOverview,
   getTourDetails,
   getLoginForm,
   getAccount,
-  updateUserData,
+  // updateUserData,
 };
