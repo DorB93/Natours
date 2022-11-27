@@ -7,7 +7,7 @@ import { logout } from './logout';
 
 // Dom Elements
 const mapLeaflet = document.getElementById('map');
-const loginForm = document.querySelector('.form');
+const loginForm = document.querySelector('.form--login');
 const logOutBtn = document.querySelector('.nav__el--logout');
 // Values
 
