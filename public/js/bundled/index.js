@@ -652,13 +652,11 @@ if (loginForm) loginForm.addEventListener("submit", (e)=>{
 if (logOutBtn) logOutBtn.addEventListener("click", (0, _logout.logout));
 if (updateDataUserForm) updateDataUserForm.addEventListener("submit", (e)=>{
     e.preventDefault();
-    const email = document.getElementById("email").value;
-    const name = document.getElementById("name").value;
-    console.log(email);
-    (0, _updatesettings.updateSettings)({
-        name,
-        email
-    }, "data");
+    const form = new FormData();
+    form.append("email", document.getElementById("email").value);
+    form.append("name", document.getElementById("name").value);
+    form.append("photo", document.getElementById("photo").files[0]);
+    (0, _updatesettings.updateSettings)(form, "data");
 });
 if (updatePasswordUserForm) updatePasswordUserForm.addEventListener("submit", async (e)=>{
     e.preventDefault();
@@ -7928,17 +7926,19 @@ parcelHelpers.defineInteropFlag(exports);
 var _alerts = require("./alerts");
 async function updateSettings(data, type) {
     try {
+        let options = {
+            method: "PATCH"
+        };
         const url = type === "data" ? "http://127.0.0.1:3000/api/v1/users/updateMe" : "http://127.0.0.1:3000/api/v1/users/updateMyPassword";
-        const req = await fetch(url, {
-            method: "PATCH",
-            headers: {
+        if (type === "data") options.body = data;
+        else {
+            options.body = JSON.stringify(data);
+            options.headers = {
                 Accept: "application/json",
                 "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                ...data
-            })
-        });
+            };
+        }
+        const req = await fetch(url, options);
         const res = await req.json();
         if (res.status === "success") {
             (0, _alerts.showAlert)("success", `'Your ${type} update completed`);

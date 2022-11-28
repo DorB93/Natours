@@ -7,20 +7,21 @@ import { showAlert } from './alerts';
  */
 export async function updateSettings(data, type) {
   try {
+    let options = { method: 'PATCH' };
     const url =
       type === 'data'
         ? 'http://127.0.0.1:3000/api/v1/users/updateMe'
         : 'http://127.0.0.1:3000/api/v1/users/updateMyPassword';
-    const req = await fetch(url, {
-      method: 'PATCH',
-      headers: {
+    if (type === 'data') {
+      options.body = data;
+    } else {
+      options.body = JSON.stringify(data);
+      options.headers = {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        ...data,
-      }),
-    });
+      };
+    }
+    const req = await fetch(url, options);
     const res = await req.json();
     if (res.status === 'success') {
       showAlert('success', `'Your ${type} update completed`);
