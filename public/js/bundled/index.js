@@ -662,8 +662,7 @@ if (updateDataUserForm) updateDataUserForm.addEventListener("submit", (e)=>{
 });
 if (updatePasswordUserForm) updatePasswordUserForm.addEventListener("submit", async (e)=>{
     e.preventDefault();
-    const btn = document.querySelector(".btn-user-settings");
-    btn.value = "Updating....";
+    document.querySelector(".btn-user-settings").textContent = "Updating....";
     const password = document.getElementById("password-current").value;
     const newPassword = document.getElementById("password").value;
     const newPasswordConfirm = document.getElementById("password-confirm").value;
@@ -672,7 +671,7 @@ if (updatePasswordUserForm) updatePasswordUserForm.addEventListener("submit", as
         newPassword,
         newPasswordConfirm
     }, "password");
-    btn.value = "Complete!";
+    document.querySelector(".btn-user-settings").textContent = "Save password";
     document.getElementById("password-current").value = "";
     document.getElementById("password").value = "";
     document.getElementById("password-confirm").value = "";
