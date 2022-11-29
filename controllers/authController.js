@@ -4,7 +4,7 @@ const { promisify } = require('util');
 const jwt = require('jsonwebtoken');
 const AppError = require('../utils/appError');
 const User = require('./../models/userModel');
-const sendEmail = require('../utils/email');
+const Email = require('../utils/email');
 
 function signToken(id) {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -39,14 +39,10 @@ function createSendToken(user, statusCode, res) {
 }
 async function signup(req, res, next) {
   try {
-    const newUser = await User.create({
-      name: req.body.name,
-      email: req.body.email,
-      role: req.body.role,
-      photo: req.body.photo,
-      password: req.body.password,
-      passwordConfirm: req.body.passwordConfirm,
-    });
+    const newUser = await User.create(req.body);
+    const url = `${req.protocol}://${req.get('host')}/me`;
+    console.log(url);
+    await new Email(newUser, url).sendWelcome();
     createSendToken(newUser, 201, res);
   } catch (err) {
     next(err);
@@ -185,18 +181,13 @@ async function forgotPassword(req, res, next) {
     }
     const resetToken = user.createPasswordResetToken();
     await user.save({ validateBeforeSave: false });
+    try {
+      const resetURL = `${req.protocol}://${req.get(
+        'host',
+      )}/api/v1/users/resetPassword/${resetToken}`;
 
-    const resetURL = `${req.protocol}://${req.get(
-      'host',
-    )}/api/v1/users/resetPassword/${resetToken}`;
-
-    const message = `Forgot your password? Submit a PATCH request with your new password & passwordConfirm to: ${resetURL}.\n If you didn't forgot your password, Please ignore this email!`;
-
-    await sendEmail({
-      email: user.email,
-      subject: 'Your password reset token (valid for 10 min)',
-      message,
-    }).catch(async () => {
+      await new Email(user, resetURL).sendPasswordReset();
+    } catch (err) {
       user.passwordResetToken = undefined;
       user.passwordResetExpires = undefined;
       await user.save({ validateBeforeSave: false });
@@ -206,7 +197,7 @@ async function forgotPassword(req, res, next) {
           500,
         ),
       );
-    });
+    }
 
     res.status(200).json({
       status: 'success',
