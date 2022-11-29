@@ -30,9 +30,7 @@ const uploadTourImages = upload.fields([
 
 async function resizeTourImages(req, res, next) {
   try {
-    if (!req.files.imageCover || !req.files.images) {
-      return next();
-    }
+    if (!req.files.imageCover || !req.files.images) return next();
 
     // Cover Image
     req.body.imageCover = `tour-${
@@ -46,19 +44,23 @@ async function resizeTourImages(req, res, next) {
 
     // Images
     req.body.images = [];
+
     await Promise.all(
       req.files.images.map(async (file, i) => {
-        const fileName = `tour-${req.params.id}-${Date.now()}-${
+        const filename = `tour-${req.params.id}-${Date.now()}-${
           i + 1
         }.jpeg`;
+
         await sharp(file.buffer)
           .resize(2000, 1333)
           .toFormat('jpeg')
           .jpeg({ quality: 90 })
-          .toFile(`public/img/tours/${fileName}`);
-        req.body.images.push(fileName);
+          .toFile(`public/img/tours/${filename}`);
+
+        req.body.images.push(filename);
       }),
     );
+
     next();
   } catch (err) {
     next(err);
