@@ -5,6 +5,7 @@ import { displayMap } from './leaflet';
 import { login } from './login';
 import { logout } from './logout';
 import { updateSettings } from './updatesettings';
+import { bookTour } from './stripe';
 
 // Dom Elements
 const mapLeaflet = document.getElementById('map');
@@ -14,6 +15,7 @@ const updateDataUserForm = document.querySelector('.form-user-data');
 const updatePasswordUserForm = document.querySelector(
   '.form-user-settings',
 );
+const bookBtn = document.getElementById('book-tour');
 // Values
 
 // Delegation
@@ -64,5 +66,13 @@ if (updatePasswordUserForm) {
     document.getElementById('password-current').value = '';
     document.getElementById('password').value = '';
     document.getElementById('password-confirm').value = '';
+  });
+}
+
+if (bookBtn) {
+  bookBtn.addEventListener('click', (e) => {
+    e.target.textContent = 'Processing...';
+    const { tourId } = e.target.dataset;
+    bookTour(tourId);
   });
 }
