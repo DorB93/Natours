@@ -4,7 +4,7 @@ import 'core-js/stable';
 import { displayMap } from './leaflet';
 import { login } from './login';
 import { logout } from './logout';
-import { updateSettings } from './updatesettings';
+import { updateSettings } from './updateSettings';
 import { bookTour } from './stripe';
 
 // Dom Elements
