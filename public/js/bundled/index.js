@@ -689,7 +689,7 @@ parcelHelpers.export(exports, "login", ()=>login);
 var _alerts = require("./alerts");
 async function login(email, password) {
     try {
-        const req = await fetch("http://127.0.0.1:3000/api/v1/users/login", {
+        const req = await fetch("/api/v1/users/login", {
             method: "POST",
             headers: {
                 Accept: "application/json",
@@ -7907,7 +7907,7 @@ parcelHelpers.export(exports, "logout", ()=>logout);
 var _alerts = require("./alerts");
 async function logout() {
     try {
-        const res = await fetch("http://127.0.0.1:3000/api/v1/users/logout");
+        const res = await fetch("/api/v1/users/logout");
         // console.log(res);
         if (res.status === 200) location.assign("/").reload(true);
         return;
@@ -7962,7 +7962,7 @@ const stripe = Stripe("pk_test_51M9UV9ImQyZnPplT13DBtfazdRbtZ41rJYLk8NPVrlQWVolN
 async function bookTour(tourId) {
     try {
         // 1) get the session from the server
-        const data = await fetch(`http://127.0.0.1:3000/api/v1/bookings/checkout-session/${tourId}`);
+        const data = await fetch(`/api/v1/bookings/checkout-session/${tourId}`);
         const session = await data.json();
         // console.log(session);
         //2) Create the checkout form + charge the credit card

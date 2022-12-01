@@ -1,20 +1,17 @@
 import { showAlert } from './alerts';
 export async function login(email, password) {
   try {
-    const req = await fetch(
-      'http://127.0.0.1:3000/api/v1/users/login',
-      {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
+    const req = await fetch('/api/v1/users/login', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
       },
-    );
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    });
     // console.log({ req });
     const res = await req.json();
     // console.log({ res });

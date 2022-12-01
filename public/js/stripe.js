@@ -8,7 +8,7 @@ export async function bookTour(tourId) {
   try {
     // 1) get the session from the server
     const data = await fetch(
-      `http://127.0.0.1:3000/api/v1/bookings/checkout-session/${tourId}`,
+      `/api/v1/bookings/checkout-session/${tourId}`,
     );
     const session = await data.json();
     // console.log(session);
