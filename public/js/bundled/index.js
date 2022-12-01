@@ -700,13 +700,9 @@ async function login(email, password) {
                 password
             })
         });
-        console.log({
-            req
-        });
+        // console.log({ req });
         const res = await req.json();
-        console.log({
-            res
-        });
+        // console.log({ res });
         if (res.status === "success") {
             (0, _alerts.showAlert)("success", "Logged in successfully");
             window.setTimeout(()=>{
@@ -714,9 +710,7 @@ async function login(email, password) {
             }, 1000);
         } else throw res;
     } catch (err) {
-        console.log({
-            err
-        });
+        // console.log({ err });
         console.log(`response ${err.response} `);
         (0, _alerts.showAlert)("error", err.message);
     }
@@ -7914,7 +7908,7 @@ var _alerts = require("./alerts");
 async function logout() {
     try {
         const res = await fetch("http://127.0.0.1:3000/api/v1/users/logout");
-        console.log(res);
+        // console.log(res);
         if (res.status === 200) location.assign("/").reload(true);
         return;
     } catch (error) {
@@ -7970,7 +7964,7 @@ async function bookTour(tourId) {
         // 1) get the session from the server
         const data = await fetch(`http://127.0.0.1:3000/api/v1/bookings/checkout-session/${tourId}`);
         const session = await data.json();
-        console.log(session);
+        // console.log(session);
         //2) Create the checkout form + charge the credit card
         await stripe.redirectToCheckout({
             sessionId: session.session.id

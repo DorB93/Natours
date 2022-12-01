@@ -8,7 +8,7 @@ process.on('uncaughtException', (err) => {
   process.exit(1);
 });
 // dotenv.config('./config.env');
-console.log(process.env.NODE_ENV);
+// console.log(process.env.NODE_ENV);
 const app = require('./app');
 
 // Connect to MongoDB database

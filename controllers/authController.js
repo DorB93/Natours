@@ -41,7 +41,7 @@ async function signup(req, res, next) {
   try {
     const newUser = await User.create(req.body);
     const url = `${req.protocol}://${req.get('host')}/me`;
-    console.log(url);
+    // console.log(url);
     await new Email(newUser, url).sendWelcome();
     createSendToken(newUser, 201, res);
   } catch (err) {
@@ -130,7 +130,7 @@ async function protect(req, res, next) {
       token,
       process.env.JWT_SECRET,
     );
-    console.log(decoded);
+    // console.log(decoded);
     // check if user still exists
     const freshUser = await User.findById(decoded.id);
     if (!freshUser) {

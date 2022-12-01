@@ -167,12 +167,12 @@ async function getToursWithin(req, res, next) {
     if (!lat || !lng) {
       return next(
         new AppError(
-          'Please provide latitude ang longittude in format lat,lng.',
+          'Please provide latitude ang longitude in format lat,lng.',
           400,
         ),
       );
     }
-    console.log({ distance }, { lat }, { lng }, { unit });
+    // console.log({ distance }, { lat }, { lng }, { unit });
 
     const tours = await Tour.find({
       startLocation: {

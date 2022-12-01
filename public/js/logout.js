@@ -5,7 +5,7 @@ export async function logout() {
     const res = await fetch(
       'http://127.0.0.1:3000/api/v1/users/logout',
     );
-    console.log(res);
+    // console.log(res);
     if (res.status === 200) location.assign('/').reload(true);
     return;
   } catch (error) {

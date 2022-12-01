@@ -36,3 +36,5 @@ export async function updateSettings(data, type) {
     showAlert('error', err.message);
   }
 }
+
+unnecessary;

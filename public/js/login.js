@@ -15,9 +15,9 @@ export async function login(email, password) {
         }),
       },
     );
-    console.log({ req });
+    // console.log({ req });
     const res = await req.json();
-    console.log({ res });
+    // console.log({ res });
     if (res.status === 'success') {
       showAlert('success', 'Logged in successfully');
       window.setTimeout(() => {
@@ -27,7 +27,7 @@ export async function login(email, password) {
       throw res;
     }
   } catch (err) {
-    console.log({ err });
+    // console.log({ err });
     console.log(`response ${err.response} `);
     showAlert('error', err.message);
   }
