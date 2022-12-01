@@ -767,7 +767,7 @@ const showAlert = (type, msg)=>{
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "HOST", ()=>HOST);
-const HOST = "https://natours-production-d2dd.up.railway.app";
+const HOST = `https://natours-production-d2dd.up.railway.app`;
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"5Birt"}],"58ZVV":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
