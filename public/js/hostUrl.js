@@ -1,1 +1,1 @@
-export const HOST = `https://natours-production-d2dd.up.railway.app:${process.env.PORT}`;
+export const HOST = `https://natours-production-d2dd.up.railway.app`;

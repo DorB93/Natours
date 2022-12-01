@@ -6,6 +6,7 @@ const helmet = require('helmet');
 const xss = require('xss-clean');
 const mongoSanitize = require('express-mongo-sanitize');
 const hpp = require('hpp');
+const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const compression = require('compression');
 
@@ -19,9 +20,15 @@ const bookingRouter = require(`${__dirname}/routes/bookingRoutes`);
 const viewRouter = require(`${__dirname}/routes/viewRoutes`);
 const app = express();
 
+app.enable('trust proxy');
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
+
 // Global Middleware
+
+// Allow CORS
+app.use(cors());
+
 // Servings statics files
 app.use(express.static(path.join(__dirname, 'public')));
 

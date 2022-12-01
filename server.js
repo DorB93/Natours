@@ -50,3 +50,10 @@ process.on('unhandleRejection', (err) => {
     process.exit(1);
   });
 });
+
+process.on('SIGTERM', () => {
+  console.log('🔱 sigterm received! Shutting down gracefully');
+  server.close(() => {
+    console.log('Process Terminated!');
+  });
+});
