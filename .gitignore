@@ -3,5 +3,5 @@ dev-data
 .eslintrc.json
 .gitignore
 config.env
-
+.vscode
 .parcel-cache
