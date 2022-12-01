@@ -17,7 +17,6 @@ const userRouter = require(`${__dirname}/routes/userRoutes`);
 const reviewRouter = require(`${__dirname}/routes/reviewRoutes`);
 const bookingRouter = require(`${__dirname}/routes/bookingRoutes`);
 const viewRouter = require(`${__dirname}/routes/viewRoutes`);
-
 const app = express();
 
 app.set('view engine', 'pug');
@@ -45,7 +44,7 @@ const connectSrcUrls = [
   'https://tile.openstreetmap.org',
   'https://*.stripe.com',
   'https://bundle.js:*',
-  'ws://127.0.0.1:*/',
+  `ws://natours-production-d2dd.up.railway.app:*/`,
 ];
 const fontSrcUrls = ['fonts.googleapis.com', 'fonts.gstatic.com'];
 
