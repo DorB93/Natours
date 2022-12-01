@@ -1,7 +1,9 @@
 import { showAlert } from './alerts';
+import { HOST } from './hostUrl';
+
 export async function login(email, password) {
   try {
-    const req = await fetch('/api/v1/users/login', {
+    const req = await fetch(`${HOST}/api/v1/users/login`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',

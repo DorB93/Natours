@@ -1,4 +1,5 @@
 import { showAlert } from './alerts';
+import { HOST } from './hostUrl';
 
 /**
  *
@@ -10,8 +11,8 @@ export async function updateSettings(data, type) {
     let options = { method: 'PATCH' };
     const url =
       type === 'data'
-        ? '/api/v1/users/updateMe'
-        : '/api/v1/users/updateMyPassword';
+        ? `${HOST}/api/v1/users/updateMe`
+        : `${HOST}/api/v1/users/updateMyPassword`;
     if (type === 'data') {
       options.body = data;
     } else {

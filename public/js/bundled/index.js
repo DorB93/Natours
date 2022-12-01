@@ -630,7 +630,7 @@ var _webQueueMicrotaskJs = require("core-js/modules/web.queue-microtask.js");
 var _leaflet = require("./leaflet");
 var _login = require("./login");
 var _logout = require("./logout");
-var _updatesettings = require("./updatesettings");
+var _updateSettings = require("./updateSettings");
 var _stripe = require("./stripe");
 // Dom Elements
 const mapLeaflet = document.getElementById("map");
@@ -658,7 +658,7 @@ if (updateDataUserForm) updateDataUserForm.addEventListener("submit", (e)=>{
     form.append("email", document.getElementById("email").value);
     form.append("name", document.getElementById("name").value);
     form.append("photo", document.getElementById("photo").files[0]);
-    (0, _updatesettings.updateSettings)(form, "data");
+    (0, _updateSettings.updateSettings)(form, "data");
 });
 if (updatePasswordUserForm) updatePasswordUserForm.addEventListener("submit", async (e)=>{
     e.preventDefault();
@@ -666,7 +666,7 @@ if (updatePasswordUserForm) updatePasswordUserForm.addEventListener("submit", as
     const password = document.getElementById("password-current").value;
     const newPassword = document.getElementById("password").value;
     const newPasswordConfirm = document.getElementById("password-confirm").value;
-    await (0, _updatesettings.updateSettings)({
+    await (0, _updateSettings.updateSettings)({
         password,
         newPassword,
         newPasswordConfirm
@@ -682,14 +682,15 @@ if (bookBtn) bookBtn.addEventListener("click", (e)=>{
     (0, _stripe.bookTour)(tourId);
 });
 
-},{"./login":"qZEOz","./leaflet":"58ZVV","core-js/modules/es.symbol.description.js":"hgu4d","core-js/modules/es.array.flat.js":"lRn13","core-js/modules/es.array.flat-map.js":"gM669","core-js/modules/es.array.sort.js":"PLp5i","core-js/modules/es.array.unscopables.flat.js":"88nm6","core-js/modules/es.array.unscopables.flat-map.js":"2tF7j","core-js/modules/es.math.hypot.js":"bPuQ3","core-js/modules/es.object.from-entries.js":"98OZX","core-js/modules/es.promise.js":"5t0IQ","core-js/modules/es.promise.finally.js":"c5ALq","core-js/modules/es.regexp.flags.js":"kZ4xK","core-js/modules/es.typed-array.set.js":"8AABK","core-js/modules/es.typed-array.sort.js":"gqGeA","core-js/modules/esnext.aggregate-error.js":"1AJZx","core-js/modules/esnext.array.last-index.js":"5oZNB","core-js/modules/esnext.array.last-item.js":"hrX0c","core-js/modules/esnext.composite-key.js":"bscj7","core-js/modules/esnext.composite-symbol.js":"b7Ocj","core-js/modules/esnext.global-this.js":"9dMts","core-js/modules/esnext.map.delete-all.js":"2Xm9N","core-js/modules/esnext.map.every.js":"7Ql27","core-js/modules/esnext.map.filter.js":"crAI6","core-js/modules/esnext.map.find.js":"58IDv","core-js/modules/esnext.map.find-key.js":"epbe4","core-js/modules/esnext.map.from.js":"ipiVC","core-js/modules/esnext.map.group-by.js":"pZE9O","core-js/modules/esnext.map.includes.js":"dVVrF","core-js/modules/esnext.map.key-by.js":"dLCuY","core-js/modules/esnext.map.key-of.js":"5GYoV","core-js/modules/esnext.map.map-keys.js":"kRcnG","core-js/modules/esnext.map.map-values.js":"iODq7","core-js/modules/esnext.map.merge.js":"icCwh","core-js/modules/esnext.map.of.js":"6dCdG","core-js/modules/esnext.map.reduce.js":"1OLes","core-js/modules/esnext.map.some.js":"f48nI","core-js/modules/esnext.map.update.js":"gIxqM","core-js/modules/esnext.math.clamp.js":"i1sX1","core-js/modules/esnext.math.deg-per-rad.js":"hRhPt","core-js/modules/esnext.math.degrees.js":"5UYuj","core-js/modules/esnext.math.fscale.js":"kPyMQ","core-js/modules/esnext.math.iaddh.js":"5zpfp","core-js/modules/esnext.math.imulh.js":"81hw2","core-js/modules/esnext.math.isubh.js":"aM94g","core-js/modules/esnext.math.rad-per-deg.js":"6EDMz","core-js/modules/esnext.math.radians.js":"kQ2Xh","core-js/modules/esnext.math.scale.js":"1GmkN","core-js/modules/esnext.math.seeded-prng.js":"a80Ue","core-js/modules/esnext.math.signbit.js":"hn1sB","core-js/modules/esnext.math.umulh.js":"lG0sl","core-js/modules/esnext.number.from-string.js":"eUyWb","core-js/modules/esnext.observable.js":"bjnRK","core-js/modules/esnext.promise.all-settled.js":"bub4H","core-js/modules/esnext.promise.any.js":"8U8Zc","core-js/modules/esnext.promise.try.js":"lEvkz","core-js/modules/esnext.reflect.define-metadata.js":"aSqy1","core-js/modules/esnext.reflect.delete-metadata.js":"9LOhD","core-js/modules/esnext.reflect.get-metadata.js":"7MJ0J","core-js/modules/esnext.reflect.get-metadata-keys.js":"45R5S","core-js/modules/esnext.reflect.get-own-metadata.js":"5b2Ne","core-js/modules/esnext.reflect.get-own-metadata-keys.js":"j4zZB","core-js/modules/esnext.reflect.has-metadata.js":"ftl0u","core-js/modules/esnext.reflect.has-own-metadata.js":"djXaw","core-js/modules/esnext.reflect.metadata.js":"3k6Kq","core-js/modules/esnext.set.add-all.js":"flIMQ","core-js/modules/esnext.set.delete-all.js":"hujso","core-js/modules/esnext.set.difference.js":"jg53i","core-js/modules/esnext.set.every.js":"6pYq1","core-js/modules/esnext.set.filter.js":"gGtL0","core-js/modules/esnext.set.find.js":"b7ZUg","core-js/modules/esnext.set.from.js":"j0r86","core-js/modules/esnext.set.intersection.js":"5QCx1","core-js/modules/esnext.set.is-disjoint-from.js":"6TMtX","core-js/modules/esnext.set.is-subset-of.js":"gulbE","core-js/modules/esnext.set.is-superset-of.js":"haory","core-js/modules/esnext.set.join.js":"dKufF","core-js/modules/esnext.set.map.js":"eGyHN","core-js/modules/esnext.set.of.js":"kqdfr","core-js/modules/esnext.set.reduce.js":"3yIcy","core-js/modules/esnext.set.some.js":"kZGsf","core-js/modules/esnext.set.symmetric-difference.js":"lrh5O","core-js/modules/esnext.set.union.js":"5SOHG","core-js/modules/esnext.string.at.js":"9nntW","core-js/modules/esnext.string.code-points.js":"irfeS","core-js/modules/esnext.string.match-all.js":"ih4fS","core-js/modules/esnext.string.replace-all.js":"1Y9vv","core-js/modules/esnext.symbol.dispose.js":"ij9Mu","core-js/modules/esnext.symbol.observable.js":"5cS6g","core-js/modules/esnext.symbol.pattern-match.js":"aoEXY","core-js/modules/esnext.weak-map.delete-all.js":"32cJW","core-js/modules/esnext.weak-map.from.js":"14Isu","core-js/modules/esnext.weak-map.of.js":"kXqsi","core-js/modules/esnext.weak-set.add-all.js":"cjD98","core-js/modules/esnext.weak-set.delete-all.js":"3D7zU","core-js/modules/esnext.weak-set.from.js":"iED1M","core-js/modules/esnext.weak-set.of.js":"iMV60","core-js/modules/web.queue-microtask.js":"eRNJq","./logout":"2MXM0","./updatesettings":"l9iU7","./stripe":"hu9K2"}],"qZEOz":[function(require,module,exports) {
+},{"./login":"qZEOz","./leaflet":"58ZVV","core-js/modules/es.symbol.description.js":"hgu4d","core-js/modules/es.array.flat.js":"lRn13","core-js/modules/es.array.flat-map.js":"gM669","core-js/modules/es.array.sort.js":"PLp5i","core-js/modules/es.array.unscopables.flat.js":"88nm6","core-js/modules/es.array.unscopables.flat-map.js":"2tF7j","core-js/modules/es.math.hypot.js":"bPuQ3","core-js/modules/es.object.from-entries.js":"98OZX","core-js/modules/es.promise.js":"5t0IQ","core-js/modules/es.promise.finally.js":"c5ALq","core-js/modules/es.regexp.flags.js":"kZ4xK","core-js/modules/es.typed-array.set.js":"8AABK","core-js/modules/es.typed-array.sort.js":"gqGeA","core-js/modules/esnext.aggregate-error.js":"1AJZx","core-js/modules/esnext.array.last-index.js":"5oZNB","core-js/modules/esnext.array.last-item.js":"hrX0c","core-js/modules/esnext.composite-key.js":"bscj7","core-js/modules/esnext.composite-symbol.js":"b7Ocj","core-js/modules/esnext.global-this.js":"9dMts","core-js/modules/esnext.map.delete-all.js":"2Xm9N","core-js/modules/esnext.map.every.js":"7Ql27","core-js/modules/esnext.map.filter.js":"crAI6","core-js/modules/esnext.map.find.js":"58IDv","core-js/modules/esnext.map.find-key.js":"epbe4","core-js/modules/esnext.map.from.js":"ipiVC","core-js/modules/esnext.map.group-by.js":"pZE9O","core-js/modules/esnext.map.includes.js":"dVVrF","core-js/modules/esnext.map.key-by.js":"dLCuY","core-js/modules/esnext.map.key-of.js":"5GYoV","core-js/modules/esnext.map.map-keys.js":"kRcnG","core-js/modules/esnext.map.map-values.js":"iODq7","core-js/modules/esnext.map.merge.js":"icCwh","core-js/modules/esnext.map.of.js":"6dCdG","core-js/modules/esnext.map.reduce.js":"1OLes","core-js/modules/esnext.map.some.js":"f48nI","core-js/modules/esnext.map.update.js":"gIxqM","core-js/modules/esnext.math.clamp.js":"i1sX1","core-js/modules/esnext.math.deg-per-rad.js":"hRhPt","core-js/modules/esnext.math.degrees.js":"5UYuj","core-js/modules/esnext.math.fscale.js":"kPyMQ","core-js/modules/esnext.math.iaddh.js":"5zpfp","core-js/modules/esnext.math.imulh.js":"81hw2","core-js/modules/esnext.math.isubh.js":"aM94g","core-js/modules/esnext.math.rad-per-deg.js":"6EDMz","core-js/modules/esnext.math.radians.js":"kQ2Xh","core-js/modules/esnext.math.scale.js":"1GmkN","core-js/modules/esnext.math.seeded-prng.js":"a80Ue","core-js/modules/esnext.math.signbit.js":"hn1sB","core-js/modules/esnext.math.umulh.js":"lG0sl","core-js/modules/esnext.number.from-string.js":"eUyWb","core-js/modules/esnext.observable.js":"bjnRK","core-js/modules/esnext.promise.all-settled.js":"bub4H","core-js/modules/esnext.promise.any.js":"8U8Zc","core-js/modules/esnext.promise.try.js":"lEvkz","core-js/modules/esnext.reflect.define-metadata.js":"aSqy1","core-js/modules/esnext.reflect.delete-metadata.js":"9LOhD","core-js/modules/esnext.reflect.get-metadata.js":"7MJ0J","core-js/modules/esnext.reflect.get-metadata-keys.js":"45R5S","core-js/modules/esnext.reflect.get-own-metadata.js":"5b2Ne","core-js/modules/esnext.reflect.get-own-metadata-keys.js":"j4zZB","core-js/modules/esnext.reflect.has-metadata.js":"ftl0u","core-js/modules/esnext.reflect.has-own-metadata.js":"djXaw","core-js/modules/esnext.reflect.metadata.js":"3k6Kq","core-js/modules/esnext.set.add-all.js":"flIMQ","core-js/modules/esnext.set.delete-all.js":"hujso","core-js/modules/esnext.set.difference.js":"jg53i","core-js/modules/esnext.set.every.js":"6pYq1","core-js/modules/esnext.set.filter.js":"gGtL0","core-js/modules/esnext.set.find.js":"b7ZUg","core-js/modules/esnext.set.from.js":"j0r86","core-js/modules/esnext.set.intersection.js":"5QCx1","core-js/modules/esnext.set.is-disjoint-from.js":"6TMtX","core-js/modules/esnext.set.is-subset-of.js":"gulbE","core-js/modules/esnext.set.is-superset-of.js":"haory","core-js/modules/esnext.set.join.js":"dKufF","core-js/modules/esnext.set.map.js":"eGyHN","core-js/modules/esnext.set.of.js":"kqdfr","core-js/modules/esnext.set.reduce.js":"3yIcy","core-js/modules/esnext.set.some.js":"kZGsf","core-js/modules/esnext.set.symmetric-difference.js":"lrh5O","core-js/modules/esnext.set.union.js":"5SOHG","core-js/modules/esnext.string.at.js":"9nntW","core-js/modules/esnext.string.code-points.js":"irfeS","core-js/modules/esnext.string.match-all.js":"ih4fS","core-js/modules/esnext.string.replace-all.js":"1Y9vv","core-js/modules/esnext.symbol.dispose.js":"ij9Mu","core-js/modules/esnext.symbol.observable.js":"5cS6g","core-js/modules/esnext.symbol.pattern-match.js":"aoEXY","core-js/modules/esnext.weak-map.delete-all.js":"32cJW","core-js/modules/esnext.weak-map.from.js":"14Isu","core-js/modules/esnext.weak-map.of.js":"kXqsi","core-js/modules/esnext.weak-set.add-all.js":"cjD98","core-js/modules/esnext.weak-set.delete-all.js":"3D7zU","core-js/modules/esnext.weak-set.from.js":"iED1M","core-js/modules/esnext.weak-set.of.js":"iMV60","core-js/modules/web.queue-microtask.js":"eRNJq","./logout":"2MXM0","./stripe":"hu9K2","./updateSettings":"28JcJ"}],"qZEOz":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "login", ()=>login);
 var _alerts = require("./alerts");
+var _hostUrl = require("./hostUrl");
 async function login(email, password) {
     try {
-        const req = await fetch("/api/v1/users/login", {
+        const req = await fetch(`${(0, _hostUrl.HOST)}/api/v1/users/login`, {
             method: "POST",
             headers: {
                 Accept: "application/json",
@@ -716,7 +717,7 @@ async function login(email, password) {
     }
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"5Birt","./alerts":"j4hQk"}],"5Birt":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"5Birt","./alerts":"j4hQk","./hostUrl":"iWQVn"}],"5Birt":[function(require,module,exports) {
 exports.interopDefault = function(a) {
     return a && a.__esModule ? a : {
         default: a
@@ -761,6 +762,12 @@ const showAlert = (type, msg)=>{
     document.querySelector("body").insertAdjacentHTML("afterbegin", markup);
     window.setTimeout(hideAlert, 5000);
 };
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"5Birt"}],"iWQVn":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "HOST", ()=>HOST);
+const HOST = "https://natours-production-d2dd.up.railway.app";
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"5Birt"}],"58ZVV":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -7905,9 +7912,10 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "logout", ()=>logout);
 var _alerts = require("./alerts");
+var _hostUrl = require("./hostUrl");
 async function logout() {
     try {
-        const res = await fetch("/api/v1/users/logout");
+        const res = await fetch(`${(0, _hostUrl.HOST)}/api/v1/users/logout`);
         // console.log(res);
         if (res.status === 200) location.assign("/").reload(true);
         return;
@@ -7916,7 +7924,30 @@ async function logout() {
     }
 }
 
-},{"./alerts":"j4hQk","@parcel/transformer-js/src/esmodule-helpers.js":"5Birt"}],"l9iU7":[function(require,module,exports) {
+},{"./alerts":"j4hQk","@parcel/transformer-js/src/esmodule-helpers.js":"5Birt","./hostUrl":"iWQVn"}],"hu9K2":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "bookTour", ()=>bookTour);
+var _alerts = require("./alerts");
+var _hostUrl = require("./hostUrl");
+const stripe = Stripe("pk_test_51M9UV9ImQyZnPplT13DBtfazdRbtZ41rJYLk8NPVrlQWVolNqBcj2LRdk6yYkINbJC5RZEFsja46oUGXjgJd4gAq000IExBQ8t");
+async function bookTour(tourId) {
+    try {
+        // 1) get the session from the server
+        const data = await fetch(`${(0, _hostUrl.HOST)}/api/v1/bookings/checkout-session/${tourId}`);
+        const session = await data.json();
+        // console.log(session);
+        //2) Create the checkout form + charge the credit card
+        await stripe.redirectToCheckout({
+            sessionId: session.session.id
+        });
+    } catch (err) {
+        console.error(err);
+        (0, _alerts.showAlert)("error", err);
+    }
+}
+
+},{"./alerts":"j4hQk","@parcel/transformer-js/src/esmodule-helpers.js":"5Birt","./hostUrl":"iWQVn"}],"28JcJ":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 /**
@@ -7925,12 +7956,13 @@ parcelHelpers.defineInteropFlag(exports);
  * @param {'password' || 'data'} type
  */ parcelHelpers.export(exports, "updateSettings", ()=>updateSettings);
 var _alerts = require("./alerts");
+var _hostUrl = require("./hostUrl");
 async function updateSettings(data, type) {
     try {
         let options = {
             method: "PATCH"
         };
-        const url = type === "data" ? "/api/v1/users/updateMe" : "/api/v1/users/updateMyPassword";
+        const url = type === "data" ? `${0, _hostUrl.HOST}/api/v1/users/updateMe` : `${0, _hostUrl.HOST}/api/v1/users/updateMyPassword`;
         if (type === "data") options.body = data;
         else {
             options.body = JSON.stringify(data);
@@ -7953,28 +7985,6 @@ async function updateSettings(data, type) {
     }
 }
 
-},{"./alerts":"j4hQk","@parcel/transformer-js/src/esmodule-helpers.js":"5Birt"}],"hu9K2":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "bookTour", ()=>bookTour);
-var _alerts = require("./alerts");
-const stripe = Stripe("pk_test_51M9UV9ImQyZnPplT13DBtfazdRbtZ41rJYLk8NPVrlQWVolNqBcj2LRdk6yYkINbJC5RZEFsja46oUGXjgJd4gAq000IExBQ8t");
-async function bookTour(tourId) {
-    try {
-        // 1) get the session from the server
-        const data = await fetch(`/api/v1/bookings/checkout-session/${tourId}`);
-        const session = await data.json();
-        // console.log(session);
-        //2) Create the checkout form + charge the credit card
-        await stripe.redirectToCheckout({
-            sessionId: session.session.id
-        });
-    } catch (err) {
-        console.error(err);
-        (0, _alerts.showAlert)("error", err);
-    }
-}
-
-},{"./alerts":"j4hQk","@parcel/transformer-js/src/esmodule-helpers.js":"5Birt"}]},["jc1EJ","4uyBp"], "4uyBp", "parcelRequire7e89")
+},{"./alerts":"j4hQk","@parcel/transformer-js/src/esmodule-helpers.js":"5Birt","./hostUrl":"iWQVn"}]},["jc1EJ","4uyBp"], "4uyBp", "parcelRequire7e89")
 
 //# sourceMappingURL=index.js.map
