@@ -1,3 +1,4 @@
+const Booking = require('../models/bookingModel');
 const User = require('../models/userModel');
 const AppError = require('../utils/appError');
 const Tour = require('./../models/tourModel');
@@ -47,6 +48,29 @@ const getAccount = (req, res) => {
     title: `Your account`,
   });
 };
+
+async function getMyTours(req, res, next) {
+  try {
+    // find all of the user booking
+    const bookings = await Booking.find({ user: req.user._id });
+
+    // find tours with the returned ID's
+    const tours = await Promise.all(
+      bookings.map(async (book) => {
+        const tour = await Tour.findById(book.tour);
+        tour.price = book.price;
+        tour.bookedIn = book.createAt;
+        return tour;
+      }),
+    );
+    res.status(200).render('overview', {
+      title: 'My Bookings',
+      tours,
+    });
+  } catch (err) {
+    next(err);
+  }
+}
 // const updateUserData = async (req, res, next) => {
 //   try {
 //     console.log('update', req.body);
@@ -74,5 +98,6 @@ module.exports = {
   getTourDetails,
   getLoginForm,
   getAccount,
+  getMyTours,
   // updateUserData,
 };

@@ -22,6 +22,11 @@ router.get(
   viewController.getLoginForm,
 );
 router.get('/me', authController.protect, viewController.getAccount);
+router.get(
+  '/my-bookings',
+  authController.protect,
+  viewController.getMyTours,
+);
 
 // router.post(
 //   '/submit-user-data',
