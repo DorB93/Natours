@@ -12,9 +12,26 @@ process.on('uncaughtException', (err) => {
 const app = require('./app');
 
 // Connect to MongoDB database
-mongoose.connect('mongodb://127.0.0.1:27017/Natours').then(() => {
-  console.log('MongoDB connected successfully!');
-});
+// const { MongoClient, ServerApiVersion } = require('mongodb');
+// const uri =
+//   'mongodb+srv://Dor2081:MFJYELuH7q31yo45@cluster0.sqnvj.mongodb.net/?retryWrites=true&w=majority';
+// const client = new MongoClient(uri, {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true,
+//   serverApi: ServerApiVersion.v1,
+// });
+// client.connect((err) => {
+//   const collection = client.db('test').collection('devices');
+//   // perform actions on the collection object
+//   client.close();
+// });
+mongoose
+  .connect(
+    'mongodb+srv://Dor2081:MFJYELuH7q31yo45@cluster0.sqnvj.mongodb.net/?retryWrites=true&w=majority',
+  )
+  .then(() => {
+    console.log('MongoDB connected successfully!');
+  });
 // .catch((err) => {
 //   console.log(err);
 // });
