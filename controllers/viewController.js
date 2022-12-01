@@ -71,6 +71,18 @@ async function getMyTours(req, res, next) {
     next(err);
   }
 }
+async function alerts(req, res, next) {
+  try {
+    const { alert } = req.query;
+    if (alert === 'booking') {
+      res.locals.alert =
+        "Your booking wes successful! Please check your email for a confirmation. If your booking doesn't show up here immediately, please come back later.";
+    }
+    next();
+  } catch (err) {
+    next();
+  }
+}
 // const updateUserData = async (req, res, next) => {
 //   try {
 //     console.log('update', req.body);
@@ -99,5 +111,6 @@ module.exports = {
   getLoginForm,
   getAccount,
   getMyTours,
+  alerts,
   // updateUserData,
 };
