@@ -16,11 +16,8 @@ router.get(
   authController.idLoggedIn,
   viewController.getTourDetails,
 );
-router.get(
-  '/login',
-  authController.idLoggedIn,
-  viewController.getLoginForm,
-);
+router.get('/signup', viewController.getSignupForm);
+router.get('/login', viewController.getLoginForm);
 router.get('/me', authController.protect, viewController.getAccount);
 router.get(
   '/my-bookings',

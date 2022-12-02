@@ -71,6 +71,11 @@ async function getMyTours(req, res, next) {
     next(err);
   }
 }
+function getSignupForm(req, res) {
+  res.status(200).render('signup', {
+    title: 'Join our family!',
+  });
+}
 async function alerts(req, res, next) {
   try {
     const { alert } = req.query;
@@ -112,5 +117,6 @@ module.exports = {
   getAccount,
   getMyTours,
   alerts,
+  getSignupForm,
   // updateUserData,
 };

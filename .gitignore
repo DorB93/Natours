@@ -5,3 +5,5 @@ dev-data
 config.env
 .vscode
 .parcel-cache
+public/js/bundled/index.js.map
+public/js/bundled/index.js
