@@ -27,7 +27,7 @@ const app = require('./app');
 // });
 mongoose
   .connect(
-    `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@cluster0.sqnvj.mongodb.net/?retryWrites=true&w=majority`,
+    `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@cluster0.hy4qfjv.mongodb.net/?retryWrites=true&w=majority`,
   )
   .then(() => {
     console.log('MongoDB connected successfully!');
